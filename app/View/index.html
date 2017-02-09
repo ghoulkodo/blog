@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>博客-首页</title>
+    <title>{$title}</title>
     <link rel="stylesheet" href="public/css/primer.css">
     <link rel="stylesheet" href="public/css/user-content.min.css">
     <link rel="stylesheet" href="public/css/octicons.css">
@@ -48,20 +48,22 @@
                 <h1 class="collection-header">Code Artisan</h1>
                 <div class="collection-info">
                     <span class="meta-info">
-                        <span class="octicon octicon-location"></span>
-                        China Beijing
+                        <span class="octicon octicon-location">
+                            Beijing
+                        </span>
+                        
                     </span>
-                    <span class="tooltipped tooltipped-s tooltipped-multiline meta-info" aria-label="PHP, JavaScript, HTML+CSS, C/C++">
+                    <span class="tooltipped tooltipped-s tooltipped-multiline meta-info" aria-label="PHP, JavaScript, HTML+CSS, Python">
                         <span class="octicon octicon-code"></span>
                         Web development
                     </span>
                     <span class="meta-info">
                         <span class="octicon octicon-organization"></span>
-                        <a href="javascript:;"></a>
+                        <a href="index.php">ABOUT ME</a>
                     </span>
                     <span class="meta-info last-updated">
                         <span class="octicon octicon-mark-github"></span>
-                        <a href="javascript:;"></a>
+                        <a href="https://www.github.com/soonj">github/soonj</a>
                     </span>
                 </div>
             </div>
@@ -77,13 +79,16 @@
                 {foreach $topic as $topic_item}
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                        <a href=""></a>
+                        <a href="index.php?m=topic&a=view&id={$topic_item['aid']}">{$topic_item['topic']}</a>
                     </h3>
                     <p class="repo-list-description">
-                        {$topic_item['topic']}
+                        {$topic_item['article']}
                     </p>
                     <p class="repo-list-meta">
-                        <span class="octicon octicon-calendar">{$topic_item['article']}</span> 2016/04/16
+                        <span class="octicon octicon-calendar">分类</span> 
+                        
+                        {$topic_item['ctime']}
+
                     </p>
                 </li>
                 {/foreach}
@@ -137,25 +142,12 @@
 
         </div>
     </div>
+    <!-- /pagination -->
+
     <div class="pagination text-align">
       <div class="btn-group">
         
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">«</button>
-        
-        
-            <a href="javascript:;" class="active btn btn-outline">1</a>
-        
-        
-          
-              <a href="javascript:;" class="btn btn-outline">2</a>
-          
-        
-          
-              <a href="javascript:;" class="btn btn-outline">3</a>
-          
-        
-        
-            <a href="javascript:;" class="btn btn-outline">»</a>
+            {$paginate}
         
         </div>
     </div>
