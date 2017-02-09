@@ -59,6 +59,23 @@ class Model
 		$result = $this->query($sql);
 		return $result[0]['m'];
 	}
+
+	//计数方法
+	public function count()
+	{
+		$sql = 'SELECT COUNT(*) FROM %TABLE%';
+		$sql = str_replace(
+			array('%TABLE%'),
+			array(
+				$this->parseTable(),
+			),
+			$sql
+		);
+		//echo $sql;
+		$data = $this->query($sql);
+		
+		return $data[0]['COUNT(*)'];
+	}
 	//删除方法
 	public function delete()
 	{
@@ -176,7 +193,7 @@ class Model
 			$sql
 			);
 			
-			
+		//echo $sql;
 		$data = $this->query($sql);
 		
 		return $data;
@@ -277,6 +294,7 @@ class Model
 				$fields = join(',' , array_intersect($options[0] , $this->fields));
 			}
 		}
+
 		return $fields;
 		
 	}
