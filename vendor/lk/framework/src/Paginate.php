@@ -4,8 +4,19 @@ namespace Framework;
  * 自定义分页类,用于产生分页视图
  *
  */
-class pageinate
+class paginate
 {
+
+    const pagePre = '<ul class="pagination">';
+    const pageEnd = '</ul>';
+
+    public $pageLastStr = '';
+    public $pageNextStr = '';
+    public $url;
+
+    public function __construct(){
+        $this->url = $this->getUrl();
+    }
     /**
      * @param $text
      * @return string
@@ -24,7 +35,8 @@ class pageinate
      */
     public static function getActivePageLinkWrapper($url, $page)
     {
-        return '<li class="active fl"><a href="' . $url . '" class="page_current">' . $page . '</a></li>';
+        return  '<a href="' . $url . '" class="active btn btn-outline">' . $page . '</a>';
+;
     }
 
 
@@ -36,7 +48,7 @@ class pageinate
      */
     public static function getPageLinkWrapper($url, $page)
     {
-        return '<li class="fl"><a href="' . $url . '" class="page_normal">' . $page . '</a></li>';
+        return '<a href="' . $url . '" class="btn btn-outline">' . $page . '</a>';
     }
 
 
@@ -48,21 +60,17 @@ class pageinate
      * @param $search   搜索
      * @return string
      */
-    public static function getSelfPageView($nowPage, $totalPage, $baseUrl, $search)
+    public  function getSelfPageView($nowPage, $totalPage)
     {
 
-        public $pagePre = '<ul class="pagination">';
-        public $pageEnd = '</ul>';
-
-        public $pageLastStr = '';
-        public $pageNextStr = '';
+        $baseUrl = $this->setUrl($nowPage);
         if ($nowPage <= 1) {
             $nowPage = 1;
-            $pageLastStr = '<li class="fl page_normal disabled_now"><span><</span></li>';
+            $pageLastStr = '<button disabled="disabled" href="javascript:;" class="btn btn-outline">«</button>';
         }
         if ($nowPage >= $totalPage) {
             $nowPage = $totalPage;
-            $pageNextStr = '<li class="fl page_normal disable_now"><span>></span></li class="fl">';
+            $pageNextStr = '<button disabled="disabled" href="javascript:;" class="btn btn-outline">»</button>';
         }
 
         //$search['totalPage'] = $totalPage;
@@ -70,8 +78,7 @@ class pageinate
         if (empty($pageLastStr)) {
             $lastPage = $nowPage - 1;
             $search['nowPage'] = $lastPage;
-            $lastSearchStr = self::arrayToSearchStr($search);
-            $url = $baseUrl . '?' . $lastSearchStr;
+            $url = $this->setUrl($lastPage);
             $pageLastStr = self::getPageLinkWrapper($url, '«');
         }
 
@@ -79,8 +86,7 @@ class pageinate
         if (empty($pageNextStr)) {
             $pageNext = $nowPage + 1;
             $search['nowPage'] = $pageNext;
-            $lastSearchStr = self::arrayToSearchStr($search);
-            $url = $baseUrl . '?' . $lastSearchStr;
+            $url = $this->setUrl($pageNext);
             $pageNextStr = self::getPageLinkWrapper($url, '»');
         }
 
@@ -89,9 +95,7 @@ class pageinate
         $pageRange = self::getPageRange($nowPage, $totalPage);
         $pageTemp .= $pageLastStr;
         foreach ($pageRange as $page) {
-            $search['nowPage'] = $page;
-            $searchStr = self::arrayToSearchStr($search);
-            $url = $baseUrl . '?' . $searchStr;
+            $url = $this->setUrl($page);
             if ($page == $nowPage) {
                 $pageTemp .= self::getActivePageLinkWrapper($url, $page);
             } else {
@@ -99,7 +103,7 @@ class pageinate
             }
         }
         $pageTemp .= $pageNextStr;
-        $pageView = $pagePre . $pageTemp . $pageEnd;
+        $pageView = self::pagePre . $pageTemp . self::pageEnd;
         return $pageView;
     }
 
@@ -146,28 +150,45 @@ class pageinate
 
     /**
      * 将搜索的数组拼接成为url
-     * 注意：PHP的内置函数http_build_query，会自动将没有值的参数清除，导致blade模板报错
+     * 
      * @param $array
      * @return string
      */
-    public static function arrayToSearchStr($array)
+    public static function getUrl()
     {
-        $fields_string = '';
-
-        reset($array);
-        end($array);
-        $lastKey = key($array);
-        reset($array);
-
-        foreach ($array as $key => $value) {
-            if ($key != $lastKey) {
-                $fields_string .= $key . '=' . $value . '&';
-            } else {
-                $fields_string .= $key . '=' . $value;
-            }
+        //return $_SERVER;
+        //获取文件地址
+        $path = $_SERVER['SCRIPT_NAME'];
+        //获取主机名
+        $host = $_SERVER['SERVER_NAME'];
+        //获取端口号
+        $port = $_SERVER['SERVER_PORT'];
+        //获取协议
+        $scheme = $_SERVER['REQUEST_SCHEME'];
+        //获取网页的请求参数
+        $queryString = $_SERVER['QUERY_STRING'];
+        
+        //var_dump($queryString);
+        if (strlen($queryString)) {
+            parse_str($queryString , $array);
+            //var_dump($array);
+            unset($array['page']);
+            //var_dump($array);
+            $path = $path . '?' . http_build_query($array);
+            
+            //var_dump($path);
         }
-        rtrim($fields_string, '&');
+        $url = $scheme . '://' . $host . ':' . $port . $path;
+        
+        return $url;
+    }
 
-        return $fields_string;
+    protected  function setUrl($page)
+    {
+        if (strstr($this->url , '?')) {
+            return $this->url . '&page=' . $page;
+        } else {
+            return $this->url . '?page=' . $page;
+        }
     }
 }
