@@ -47,5 +47,5 @@ Temporary Items
 .apdisk
 
 # Website cache file
-.cache/database/*
-.cache/tpl/*
+cache/database/*
+cache/tpl/*
