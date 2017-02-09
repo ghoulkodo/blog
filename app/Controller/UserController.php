@@ -2,7 +2,7 @@
 namespace Controller;
 use Controller\Controller;
 use Model\UserModel;
-use Framewrok\Page;
+use Framewrok\Paginate;
 
 class UserController extends Controller
 {
