@@ -1,4 +1,0 @@
-<h1>
-	<?=$username;?>
-	<?=$wanglei;?>
-</h1>
