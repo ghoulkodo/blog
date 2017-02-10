@@ -13,7 +13,7 @@ namespace Framework;
 #
 #
 
-trait Parsedown
+class Parsedown
 {
     # ~
 
