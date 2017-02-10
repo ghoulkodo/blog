@@ -150,8 +150,10 @@ class Model
 	protected function exec($sql)
 	{
 		$result = mysqli_query($this->link , $sql);
-		if ($result) {
+		if ($result && __METHOD__ == 'add') {
 			return mysqli_insert_id($this->link);
+		} else if($result && (__METHOD__ == 'del' || __METHOD__ == 'update')){
+			return mysqli_affected_rows($this->link);
 		} else {
 			return false;
 		}
