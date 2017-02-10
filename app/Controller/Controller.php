@@ -1,13 +1,23 @@
 <?php
 namespace Controller;
 use Framework\Tpl;
+use Framework\Paginate;
+use Framework\Parsedown;
 class Controller extends Tpl
 {
 	public function __construct()
 	{
 
 		parent::__construct($GLOBALS['config']['TPL_CACHE_DIR'] , $GLOBALS['config']['TPL_DIR'] , $GLOBALS['config']['TPL_LIFETIME']);
+
+		//加载分页类
+		$this->Paginate = new Paginate();
+
+		//加载Parsedown类
+		$this->Parsedown = new Parsedown();
+
 	}
+
 
 	//成功的方法
 	public function success($msg = null , $url = null , $time = 3)
