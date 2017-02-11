@@ -1,9 +1,11 @@
 <?php
 namespace Controller;
 use Controller\Controller;
+use Controller\CommController;
 use Model\TopicModel;
 use Framework\Paginate;
 use Framework\Parsedown;
+use Framework\Comment;
 
 class TopicController extends Controller
 {
@@ -13,8 +15,12 @@ class TopicController extends Controller
 
 	public function __construct(){
 		parent::__construct();
-		
+
 		$this->topic = new TopicModel();
+
+		$this->rec = new CommController();
+
+		$this->comm = new Comment();
 	}
 
 
@@ -53,6 +59,7 @@ class TopicController extends Controller
 	//查看指定id的文章详情
 	public function view($id = null){
 
+
 		if (is_null($_GET['id'])) {
 
 			return $this->error();
@@ -63,6 +70,7 @@ class TopicController extends Controller
 
 			//获取数据
 			$data = $this->topic->viewTopic($id);
+			$comm = $this->rec->list($id);
 
 			//时间戳处理
 			$data[0]['ctime'] = date('Y-m-d' , $data[0]['ctime']);
@@ -70,6 +78,7 @@ class TopicController extends Controller
 			//显示页面
 			$this->assign('title' , $data[0]['topic']);
 			$this->assign('topic' , $data[0]);
+			$this->assign('comm' , $comm);
 			$this->display('main.html');
 		}
 
