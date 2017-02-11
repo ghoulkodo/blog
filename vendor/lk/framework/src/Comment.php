@@ -5,71 +5,73 @@ namespace Framework;
 #
 class Comment
 {
-	public function __constract(){
+	//处理为html样式
+	public function html($data , $depth = 0){
 
-	}
+		$depth_html = $html = '';
+		for ($i=0; $i < $depth ; $i++) { 
+			$depth_html .= '<ol class="comment-list">'; 
+		}
+		foreach ($data as $value) {
+			$html .= '<ol class="comment-list">
+            			<li class="comment odd alt thread-odd thread-alt depth-1 parent">
+                			<article class="comment-body">
+                    			<footer class="comment-meta">
+                        			<div class="comment-author vcard">
+                            		<img  src="" class="avatar avatar-50 photo" height="50" width="50"/>                     
+                            			<b class="fn">';
+			$html .= "{$value['username']}</b>";
+			$html .= '<span class="says">
+                                说道：
+                            </span>                 
+                        </div>
+                        <div class="comment-metadata">
+                            <a href="#">';
+			$html .= "{$value['ctime']}</a>";
+			$html .= '</div>
+                    </footer>
+                    <div class="comment-content">';
+            $html .= "<p>{$value['comment']}</p></div>";
+            $html .= '<div class="reply">
+                        <a class="comment-reply-link" href="#"">
+                            回复
+                        </a>
+                    	</div>          
+           		 		</article>
+       				 	</li>
+     					</ol>';
 
-	private function html(){
-		$string =  "<div id="comments" class="comments-area">
 
-	<h2 class="comments-title">
-		{$title}的相关评论		
-	</h2>
-		<ol class="comment-list">
-			<li class="comment odd alt thread-odd thread-alt depth-1 parent">
-				<article class="comment-body">
-					<footer class="comment-meta">
-						<div class="comment-author vcard">
-							<img alt='' src='#' srcset='#' class='avatar avatar-50 photo' height='50' width='50' />						
-							<b class="fn">
-								{username}
-							</b>
-							<span class="says">
-								说道：
-							</span>					
-						</div><!-- .comment-author -->
 
-						<div class="comment-metadata">
-							<a href="#">
-								<time datetime="2017-02-02T16:32:35+00:00">
-									{date}							
-								</time>
-							</a>				
-						</div><!-- .comment-metadata -->
-					</footer><!-- .comment-meta -->
-					<div class="comment-content">
-						<p>{$comm}</p>
-					</div><!-- .comment-content -->
 
-					<div class="reply">
-						<a rel='nofollow' class='comment-reply-link' href='#'>
-							回复
-						</a>
-					</div>			
-				</article><!-- .comment-body -->
-			</li>"";
+			if ($value['parentid']) {
+				$html .= $this->html($value['parentid'] , $depth+1);
+			}
+		}
 
-		return $string 
+		return $html;
+
 	}
 
 
 	//创建父级树
-	protected function find_parent($ar, $id='id', $pid='pid') { 
-	  foreach($ar as $v) {
+	public function find_parent($arr, $id = 'oid', $aid = 'aid') { 
+		var_dump($arr);
+	  foreach($arr as $v) {
 	    $t[$v[$id]] = $v;
 	  }
 
 	  foreach ($t as $k => $item){
-	    if( $item[$pid] ){
-	      if( ! isset($t[$item[$pid]]['parent'][$item[$pid]]) )
-	         $t[$item[$id]]['parent'][$item[$pid]] =& $t[$item[$pid]];
+	    if( $item[$aid] ){
+	      if( ! isset($t[$item[$aid]]['parent'][$item[$aid]]) )
+	         $t[$item[$id]]['parent'][$item[$aid]] =& $t[$item[$aid]];
 	    }
 	  } 
 	  return $t;
 	}
 	 
 	//创建孩子树
-	protected function find_child($ar, $id='id', $pid='pid') {
+	public function find_child($arr, $id='id', $pid='pid') {
 	  foreach($ar as $v) {
 	    $t[$v[$id]] = $v;
 	  }
@@ -80,6 +82,21 @@ class Comment
 	  }
 	  return $t;
 	}
+
+	//
+	public function sortOut($cate,$parentid=0,$level=0){
+
+        $tree = array();
+        foreach($cate as $val){
+            if($val['parentid'] == $parentid){
+                $val['level'] = $level + 1;
+                $val['html'] = str_repeat($this->html, $level);
+                $tree[] = $val;
+                $tree = array_merge($tree, self::sortOut($cate,$val['parentid'],$level+1));
+            }
+        }
+        return $tree;
+    }
 
 
 }
