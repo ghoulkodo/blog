@@ -27,10 +27,7 @@ class UserController extends Controller
 		$data['password'] = $_POST['password'];
 		$data['ctime'] = time();
 		$result = $this->user->doAdd($data);
-		// $model = new Model()
-		//$model->add($data);
-		//model???
-		var_dump($result);
+		
 		if ($result) {
 			$this->success();
 		} else {

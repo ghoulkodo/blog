@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="public/css/prism.css">
     <link rel="stylesheet" href="public/css/bootstrap.css">
 
+
+    
+
 </head>
 
 <body class="">
@@ -29,7 +32,7 @@
             <h1><a href="javascript:;"></a></h1>
             <nav class="site-header-nav" role="navigation">
                 
-                <a href="javascript:;"></a>
+                <a href="index.php">主页</a>
                 
                 <a href="javascript:;"></a>
                 
@@ -66,19 +69,22 @@
         <div class="column three-fourths">
             <article class="article-content markdown-body">
                 
-                {$topic['article']}
+                {$topic['topic']}
 
             </article>
+
+
 <!--载入评论页面-->             
 {if !empty($comm)}
 <div class="post-comments">               
-<div id="comments" class="comments-area">
+<div class="comments-area">
     <h2 class="comments-title">
-        {$title}的相关评论       
+        《{$title}》的相关评论       
     </h2> 
+    <ol class="comment-list">
   
-    {include comment.html}
-    
+    {$comm}
+    </ol>
    
 </div><!-- #comments -->
 </div> 
@@ -93,7 +99,7 @@
                     </a>
                 </small>
             </h3>           
-            <form action="http://coolshell.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+            <form action="index.php?m=comm&a=new" method="post" id="commentform" class="comment-form" novalidate>
                 <p class="comment-notes">
                     <span id="email-notes">
                         电子邮件地址不会被公开。
@@ -111,20 +117,10 @@
                     </label> 
                     <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required='true' required='required' />
                 </p>
-
-                <p class="comment-form-email">
-                    <label for="email">电子邮件 
-                        <span class="required">*</span>
-                    </label> 
-                    <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required='true' required='required' />
-                </p>
-                <p class="comment-form-url">
-                    <label for="url">站点</label> 
-                    <input id="url" name="url" type="url" value="" size="30" maxlength="200" />
-                </p>
+               
                 <p class="form-submit">
                     <input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> 
-                    <input type='hidden' name='comment_post_ID' value='17680' id='comment_post_ID' />
+                    <input type='hidden' name='comment_post_ID' value='{$topic['aid']}' id='comment_post_ID' />
                     <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
                 </p>
                 <p style="display: none;">
@@ -199,8 +195,8 @@
     <footer class="container">
         <div class="site-footer" role="contentinfo">
             <div class="copyright left mobile-block">
-                    © 2015
-                    <span title="overtrue.me">overtrue.me</span>
+                    © 2017
+                    <span title="dovegang.site">dovegang.site</span>
                     <a href="javascript:;"></a>
             </div>
 
@@ -209,7 +205,7 @@
                     <a href="javascript:;"></a>
                 </li>
             </ul>
-            <a href="https://github.com/overtrue/overtrue.github.io" target="_blank" aria-label="view source code">
+            <a href="https://github.com/soonj" target="_blank" aria-label="view source code">
                 <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
             </a>
             <ul class="site-footer-links mobile-hidden">

@@ -3,6 +3,7 @@ namespace Controller;
 use Framework\Tpl;
 use Framework\Paginate;
 use Framework\Parsedown;
+use Framework\Disqus;
 class Controller extends Tpl
 {
 	public function __construct()
@@ -15,6 +16,9 @@ class Controller extends Tpl
 
 		//加载Parsedown类
 		$this->Parsedown = new Parsedown();
+
+		//加载评论类
+		$this->Disqus = new Disqus();
 
 	}
 

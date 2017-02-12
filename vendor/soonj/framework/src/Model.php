@@ -109,7 +109,7 @@ class Model
 			),
 			$sql
 		);
-		
+
 		return $this->exec($sql);
 		
 	}
@@ -142,6 +142,7 @@ class Model
 			),
 			$sql
 		);
+
 		return $this->exec($sql);
 	}
 	
@@ -150,9 +151,11 @@ class Model
 	protected function exec($sql)
 	{
 		$result = mysqli_query($this->link , $sql);
-		if ($result && __METHOD__ == 'add') {
+		if ($result && stristr($sql , 'insert')) {
+
 			return mysqli_insert_id($this->link);
-		} else if($result && (__METHOD__ == 'del' || __METHOD__ == 'update')){
+		} else if ( $result && stristr($sql , 'update')){
+			
 			return mysqli_affected_rows($this->link);
 		} else {
 			return false;

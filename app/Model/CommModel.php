@@ -1,7 +1,7 @@
 <?php
 namespace Model;
 use Framework\Model;
-use Framework\Comment;
+use Framework\Disqus;
 
 #	留言模块
 
@@ -10,16 +10,21 @@ class CommModel extends Model
 
 	public function __construct(){
 		parent::__construct();
-		$this->comm = new Comment();
+		$this->comm = new Disqus();
 	}
 
 	//查看指定id的所有回复
 	public function getComm($id){
 
-		
 		$arr = $this->where("aid = $id")->order('ctime desc')->limit('5')->select();
-		$data = $this->comm->find_parent($arr);
-		return $data;
+		if ($arr) {
+			$data = $this->comm->find_parent($arr);
+			return $data;
+		}
+
+		return false;
+		
+		
 	}
 
 	//查看引用回复
@@ -30,7 +35,6 @@ class CommModel extends Model
 	//创建新回复
 	public function newComm($data){
 		$result = $this->add($data);
-
 		return $result;
 	}
 

@@ -2,5 +2,5 @@
 return [
 	'app/Controller' => 'Controller\\',
 	'app/Model' => 'Model\\',
-	'vendor/lk/framework/src' => 'Framework\\',
+	'vendor/soonj/framework/src' => 'Framework\\',
 ];

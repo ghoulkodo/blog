@@ -18,9 +18,8 @@ class TopicController extends Controller
 
 		$this->topic = new TopicModel();
 
-		$this->rec = new CommController();
+		$this->comm = new CommController();
 
-		$this->comm = new Comment();
 	}
 
 
@@ -40,8 +39,8 @@ class TopicController extends Controller
 		//截取部分汉字 并 做时间戳处理
 		foreach ($data as $key => $value) {
 			//截取汉字处理
-			if (strlen($value['article']) > 200) {
-				$data[$key]['article'] = mb_substr($value['article'], 0 , 116);
+			if (strlen($value['topic']) > 200) {
+				$data[$key]['topic'] = mb_substr($value['topic'], 0 , 116);
 			}
 			//时间戳处理
 			$data[$key]['ctime'] = date('Y-m-d' , $data[$key]['ctime']);
@@ -70,7 +69,8 @@ class TopicController extends Controller
 
 			//获取数据
 			$data = $this->topic->viewTopic($id);
-			$comm = $this->rec->list($id);
+
+			$comm = $this->comm->list($id);
 
 			//时间戳处理
 			$data[0]['ctime'] = date('Y-m-d' , $data[0]['ctime']);
@@ -92,7 +92,7 @@ class TopicController extends Controller
 		$data['topic'] = $this->Parsedown->text($_POST['topic']);
 		$data['ctime'] = time();
 		
-		$result = $this->Topic->newTopic($data);
+		$result = $this->topic->newTopic($data);
 
 		//执行插入成功
 		if ($result) {
@@ -116,17 +116,23 @@ class TopicController extends Controller
 		//拼接
 
 		//执行数据库更改
-		$result = $this->Topic->edtTopic($data , $isdel = 0);
+		$result = $this->topic->edtTopic($data , $isdel = 0);
 		//返回结果
 	}
 
 	//删除文章
-	public  function del(){
+	public function del(){
 		//接受id
-
+		$id = $_GET['id'];
+  
 		//执行数据库更改
-		$result = $this->Topic->edtTopic($data , $isdel = 1);
+		$result = $this->topic->edtTopic($id , $isdel = 1);
 
 		//返回结构
+		if ($result) {
+			$this->success();
+		} else {
+			$this->error();
+		}
 	}
 }
