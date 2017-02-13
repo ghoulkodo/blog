@@ -91,8 +91,8 @@
  			{foreach $topic as $value}
  			<tr>
  				<td>{$value['title']}</td>
- 				<td>{$value['article']}</td>
- 				<td>{$value['ctime']}</td>
+ 				<td>{$value['topic']}</td>
+ 				<td>{section}echo date('Y-m-d h:i:s' , $value['ctime']);{/section}</td>
  				<td><a href="index.php?m=topic&a=del&id={$value['aid']}">删除</a></td>
  			</tr>
  			{/foreach}
