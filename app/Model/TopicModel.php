@@ -51,5 +51,10 @@ class TopicModel extends Model
 		return $result;
 	}
 
+	//搜索文章
+	public function searchTopic(){
+		$result = $this->where("display=1 LIKE '%$key%'")->select();
+	}
+
 	
 }
