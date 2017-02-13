@@ -30,13 +30,13 @@ class Disqus
 			$html .= '</div>
                     </footer>
                     <div class="comment-content">';
-            $html .= "<p>{$value['comment']}</p></div>
-            			<a><span>回复</span></a>
-            			</article>";
+            $html .= '<p>'.$value['comment'].'</p></div>
+            			<button type="button" onclick="myFunc('.$value['oid'].')">回复/取消</button>
+            			</article>';
             
            	$html .= '
-           				<div id="respond" class="comment-respond">
-						<h3 id="reply-title" class="comment-reply-title">发表评论 
+           				<div  class="comment-respond" id="'.$value['oid'].'" style="display:none">
+						<h3 id="reply-title" class="comment-reply-title">对《'.$value['username'].'》发表评论 
 							<small>
 								<a rel="nofollow" id="cancel-comment-reply-link" href="/articles/17680.html#respond" style="display:none;">取消回复</a>
 							</small>
@@ -57,7 +57,7 @@ class Disqus
 							<p class="form-submit">
 								<input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> 
 								<input type="hidden" name="comment_post_ID" value="'.$value['aid'].'" id="comment_post_ID" />
-								<input type="hidden" name="comment_parent" id="comment_parent" value="'.$value['parentid'].'" />
+								<input type="hidden" name="comment_parent" id="comment_parent" value="'.$value['oid'].'" />
 							</p>
 							<p style="display: none;">
 								<input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="64d1f32d7e" />
