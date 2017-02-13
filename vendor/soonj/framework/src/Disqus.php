@@ -31,7 +31,7 @@ class Disqus
                     </footer>
                     <div class="comment-content">';
             $html .= '<p>'.$value['comment'].'</p></div>
-            			<button type="button" onclick="myFunc('.$value['oid'].')">回复/取消</button>
+            			<a><span  onclick="myFunc('.$value['oid'].')">回复/取消</span></a>
             			</article>';
             
            	$html .= '
