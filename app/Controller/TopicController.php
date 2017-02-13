@@ -135,4 +135,12 @@ class TopicController extends Controller
 			$this->error();
 		}
 	}
+
+	public function s(){
+		$key = $_POST['key'];
+
+		$result = $this->topic->searchTopic($key);
+
+		$this->assign('result' , $result);
+	}
 }
